@@ -714,12 +714,21 @@ func TestValidateNIXLPushMode(t *testing.T) {
 		require.ErrorContains(t, opts.Validate(), "--nixl-push-prefill-tp-size")
 	})
 
+	t.Run("rejects a non-positive prefill pp size", func(t *testing.T) {
+		opts := NewOptions()
+		opts.NIXLPushMode = true
+		opts.NIXLPushPrefillPPSize = 0
+		require.NoError(t, opts.Complete())
+		require.ErrorContains(t, opts.Validate(), "--nixl-push-prefill-pp-size")
+	})
+
 	t.Run("allows nixl-push-mode with defaults", func(t *testing.T) {
 		opts := NewOptions()
 		opts.NIXLPushMode = true
 		require.NoError(t, opts.Complete())
 		require.NoError(t, opts.Validate())
 		require.Equal(t, 5600, opts.NIXLPushSideChannelPort)
+		require.Equal(t, 1, opts.NIXLPushPrefillPPSize)
 	})
 }
 

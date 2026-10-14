@@ -246,6 +246,7 @@ func NewOptions() *Options {
 			// vLLM's VLLM_NIXL_SIDE_CHANNEL_PORT default.
 			NIXLPushSideChannelPort: 5600,
 			NIXLPushPrefillTPSize:   1,
+			NIXLPushPrefillPPSize:   1,
 		},
 		vllmPort:      defaultVLLMPort,
 		inferencePool: os.Getenv(envInferencePool),
@@ -344,6 +345,8 @@ func (opts *Options) AddFlags(fs *pflag.FlagSet) {
 		"Prefill engine's NIXL side channel port (VLLM_NIXL_SIDE_CHANNEL_PORT). Only used with --nixl-push-mode.")
 	fs.IntVar(&opts.NIXLPushPrefillTPSize, "nixl-push-prefill-tp-size", opts.NIXLPushPrefillTPSize,
 		"Prefill engine's tensor-parallel size. Only used with --nixl-push-mode.")
+	fs.IntVar(&opts.NIXLPushPrefillPPSize, "nixl-push-prefill-pp-size", opts.NIXLPushPrefillPPSize,
+		"Prefill engine's pipeline-parallel size. Only used with --nixl-push-mode.")
 
 	fs.StringSliceVar(&opts.enableTLS, enableTLS, opts.enableTLS, "stages to enable TLS for. Supported: "+supportedTLSStageNamesStr+". Can be specified multiple times or as comma-separated values.")
 	fs.StringSliceVar(&opts.tlsInsecureSkipVerify, tlsInsecureSkipVerify, opts.tlsInsecureSkipVerify, "stages to skip TLS verification for. Supported: "+supportedTLSStageNamesStr+". Can be specified multiple times or as comma-separated values.")
@@ -685,6 +688,9 @@ func (opts *Options) Validate() error {
 		}
 		if opts.NIXLPushPrefillTPSize < 1 {
 			return fmt.Errorf("--nixl-push-prefill-tp-size must be a positive integer, got %d", opts.NIXLPushPrefillTPSize)
+		}
+		if opts.NIXLPushPrefillPPSize < 1 {
+			return fmt.Errorf("--nixl-push-prefill-pp-size must be a positive integer, got %d", opts.NIXLPushPrefillPPSize)
 		}
 	}
 

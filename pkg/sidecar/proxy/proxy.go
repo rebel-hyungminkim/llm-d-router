@@ -306,6 +306,10 @@ type Config struct {
 	NIXLPushSideChannelPort int
 	// NIXLPushPrefillTPSize is the prefill engine's tensor-parallel size.
 	NIXLPushPrefillTPSize int
+	// NIXLPushPrefillPPSize is the prefill engine's pipeline-parallel size.
+	// Decode registers its blocks with, and waits for a write notification
+	// from, every prefill stage.
+	NIXLPushPrefillPPSize int
 
 	// MoRIIORemoteHostSpecs / MoRIIODecodeHostSpecs / MoRIIODecodePodIPSpec hold
 	// the ORIGINAL host specs (DNS names or raw IPs) exactly as supplied on the

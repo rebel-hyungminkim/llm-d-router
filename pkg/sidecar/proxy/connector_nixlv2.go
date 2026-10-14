@@ -884,6 +884,7 @@ func (s *Server) runNIXLPushParallel(
 		requestFieldRemoteHost:      prefillHost,
 		requestFieldRemotePort:      s.config.NIXLPushSideChannelPort,
 		"tp_size":                   s.config.NIXLPushPrefillTPSize,
+		"pp_size":                   s.config.NIXLPushPrefillPPSize,
 	}
 
 	dbody, err := json.Marshal(completionRequest)

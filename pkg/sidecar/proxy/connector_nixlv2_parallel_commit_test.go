@@ -224,6 +224,7 @@ func nixlPushConfig(cfg *Config) {
 	cfg.NIXLPushMode = true
 	cfg.NIXLPushSideChannelPort = 5600
 	cfg.NIXLPushPrefillTPSize = 2
+	cfg.NIXLPushPrefillPPSize = 8
 }
 
 var _ = Describe("NIXL Connector (v2) push dispatch", func() {
@@ -295,6 +296,7 @@ var _ = Describe("NIXL Connector (v2) push dispatch", func() {
 		Expect(d.kvParams).To(HaveKeyWithValue(requestFieldRemoteHost, prefillHost))
 		Expect(d.kvParams).To(HaveKeyWithValue(requestFieldRemotePort, BeNumerically("==", 5600)))
 		Expect(d.kvParams).To(HaveKeyWithValue("tp_size", BeNumerically("==", 2)))
+		Expect(d.kvParams).To(HaveKeyWithValue("pp_size", BeNumerically("==", 8)))
 		Expect(d.kvParams).To(HaveKeyWithValue(requestFieldRemoteRequestID, "chatcmpl-"+p.requestID))
 		Expect(d.body).To(HaveKeyWithValue("max_tokens", BeNumerically("==", 50)))
 	})
